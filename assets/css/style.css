@@ -486,23 +486,23 @@ ul {
 }
 
 .contact_book {
-    margin-top: 50px;
+    margin-top: 10px;
 }
 
 .contact_book a {
     display: flex;
     align-items: center;
     background: rgb(245 163 2);
-    border-radius: 13px;
+    border-radius: 12px;
     width: 235px;
     justify-content: center;
-    padding: 10px 0px;
+    padding: 10px 10px;
     text-decoration: none;
 }
 
 .contact_book span {
     font-weight: 600;
-    font-size: 22px;
+    font-size: 18px;
     line-height: 27px;
     color: rgb(0 0 0);
     text-transform: uppercase;
