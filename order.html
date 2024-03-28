@@ -1,592 +1,206 @@
-
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>iTaxi LVC</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link type="image/x-icon" href="assets/images/iTaxi_logo.png" rel="icon">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/slick.css">
-    <link rel="stylesheet" href="assets/css/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
-    <div class="main_container flt">
-        <div class="header_container flt" id="home">
-            <div class="container">
-                <div class="header flt">
-                    <div class="logo">
-                        <img src="assets/images/iTaxi_logo.svg" alt="logo" />
-                    </div>
-                    <ul class="menuH" id="mobileMenu">
-                        <div class="menuH_close hide_desktop">
-                            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
-                                <img src="assets/images/close-menu.png" alt="image" />
-                            </a>
-                        </div>
-                    <div class="book_ride hide_mobile">
-                        <a href="index.html" target="_self">Inapoi la pagina principală</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-	<style type="text/css">
-		.checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline{
-			margin-left: auto;
-		}
-		.checkbox-inline.checkbox-inline, .radio-inline.radio-inline{
-			margin-left: auto;
-			margin-right: 10px;
-		}
-		footer ul{
-			margin: 0;
-			padding: 0em;
-		}
-		.page-header {
-			margin-top: 0;
-			margin-bottom: 0.5em;
-		}
-		.sidebar {
-			text-align: center;
-		}
-		.details {
-			padding: 1em;
-			margin-bottom: 1em;
-		}
-		.details h3 {
-			margin: 0;
-		}
-
-		.form-group.number .input-group{
-			width:9em;
-			text-align: center;
-		}
-		.address-autocomplete .input-group{
-			width:25em;
-		}
-
-		#mapDisplay{
-			background: rgba(255,255,255,0.9);
-		}
-		#map{
-			width: 100%;
-			height: 200px;
-		}
-		#title {
-			background-image: url("ico/favicon-32x32.png");
-			background-repeat: no-repeat;
-			background-position: 1em 50%;
-			padding-left: 3.5em;
-		}
-
-		#latlng {
-			border: 1px solid #ddd;
-			padding: 0.5em;
-			margin-bottom: 0.5em;
-			height: 2.5em;
-		}
-		#map{
-			margin-top: 1em;
-		}
-		@media only screen and (max-width: 767px) {
-			.sidebar {
-				position: fixed;
-				right: 0;
-				z-index: 5;
-			}
-			#mapDisplay{
-				z-index: 2;
-				position: fixed;
-				bottom: 1em;
-				left: 1em;
-				right: 1em;
-				border: 1px solid black;
-			}
-			#map{
-				width: 100%;
-				height: 300px;
-			}
-			.address-autocomplete .input-group{
-				width:100%;
-			}
-		}
-
-	</style>
-
-</head>
-<div class="container">
-	<div class="row">
-	<div class="sidebar col-sm-6 col-sm-push-6">
-		<div class="details bg-info hidden-xs">
-			<h3><span id="cost">0</span> RON</h3>
-			<h4 class="summary"><span class="hidden-xs">Distanța: </span><span id="distance"></span></h4>
-			<h4 class="summary"><span class="hidden-xs">Timpul estimat: </span><span id="duration"></span></h4>
-			<span class="visible-xs-inline toolbar-mobile">
-				<div class="btn btn-primary show-map hidden" data-action="show-map">Arată-mi harta</div>
-			</span>
-		</div>
-		<div id="mapDisplay">
-				<span class="toolbar">
-					<div id="latlng"></div>
-					<input class="btn-inline btn btn-info" type="button" value="Locate me" data-action="find-me">
-					<div class="btn btn-primary" data-action="use-this">Folosește această locație</div>
-					<div class="btn btn-danger" data-action="dismiss">X</div>
-				</span>
-				<span class="visible-xs-inline toolbar-mobile">
-					<div class="btn btn-danger dismiss hidden" data-action="dismiss">X</div>
-				</span>
-		    <div id="map"></div>
-		</div>
-
-	</div>
-	<div class="form col-sm-6 col-sm-pull-6">
-		<form id="calculateCost">
+<html>
+	<head>
+		<title>iTaxi LVC</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link type="image/x-icon" href="assets/images/iTaxi_logo.png" rel="icon">
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="assets/css/slick.css">
+		<link rel="stylesheet" href="assets/css/jquery.fancybox.min.css">
+		<link rel="stylesheet" href="assets/css/animate.css">
+		<link rel="stylesheet" href="assets/css/style.css">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		
-		<label class="radio-inline"><input class="" type="radio" name="selectDistance" value="locations" checked="checked"> Specifică locația</label>
-		<label class="radio-inline"><input class="" type="radio" name="selectDistance" value="manual"> Specifică locația manual</label>
-
-		<div id="locationsContainer" class="selectDistance">
-			<div class="form-group address-autocomplete" id="addressFrom-autocomplete">
-				<label>From: 
-					<div class="input-group pickerContainer">
-						<input class="form-control picker" type="text" name="" id="addressFrom">
-						<div class="input-group-addon btn show-map" data-source="addressFrom">Arată-mi harta</div>
+		<body>
+			<div class="main_container flt">
+				<div class="header_container flt" id="home">
+					<div class="container">
+						<div class="header flt">
+							<div class="logo">
+								<img src="assets/images/iTaxi_logo.svg" alt="logo" />
+							</div>
+							<ul class="menuH" id="mobileMenu">
+								<div class="menuH_close hide_desktop">
+									<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+										<img src="assets/images/close-menu.png" alt="image" />
+									</a>
+								</div>
+								<li class="book_ride hide_desktop">Rezervă un taxi<a href="order.html"
+										target="_blank"></a></li>
+							</ul>
+							<span onclick="openNav()" class="toggle_btn hide_desktop">
+								<img src="assets/images/open-menu.png" alt="image" />
+							</span>
+							<div class="book_ride hide_mobile">
+								<a href="index.html" target="_self">Inapoi la pagina principală!</a>
+							</div>
+						</div>
 					</div>
-				</label>
-				<div class="selectedContainer">
-					<a class="clearSelected btn btn-danger">X</a> <span class="selected" id="addressFromSelected"></span>
+				</div>
+		
+		<style>
+		#form {
+			margin-top: 50px;
+		}
+
+		#map {
+			width: 100%;
+			height: 300px;
+			margin-top: 20px;
+		}
+
+		html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<!-- left col -->
+				<div id="form" class="form-horizontal col-sm-8">
+					<div class="form-group">
+						<b><label for="from-input">De la:</label></b>
+						<input type="search" class="form-control" id="from-input" placeholder="From">
+						<!-- aria-describedby -->
+					</div>
+					<div class="form-group">
+						<b><label for="to-input">Înspre:</label></b>
+						<input type="search" class="form-control" id="to-input" placeholder="To">
+					<button id="submit" type="submit" class="btn btn-primary">Rezervă</button>
+				</div>
+				<!-- right col -->
+				<div id="form" class="form-horizontal col-sm-4">
+					<div class="form-group">
+						<b><label for="to-input">Distanța</label></b>
+						<label id="value-distance" class="form-text">Apasa pe butonul "Rezervă" pentru a calcula distanța</label>
+					</div>
+					<div class="form-group">
+						<b><label for="to-input">Preț per KM</label></b>
+						<label id="price" class="form-text">2.5 RON</label>
+					</div>
+					<div class="form-group">
+						<b><label for="to-input">Preț total</label></b>
+						<label id="value-price" class="form-text">Apasa pe butonul "Rezervă" pentru a calcula distanța</label>
+					</div>
 				</div>
 			</div>
-			<div class="form-group address-autocomplete" id="addressTo-autocomplete">
-				<label>To: 
-					<div class="input-group pickerContainer">
-						<input class="form-control picker" type="text" name="" id="addressTo">
-						<div class="input-group-addon btn show-map" data-source="addressTo">Arată-mi harta</div>
-					</div>
-				</label>
-				<div class="selectedContainer">
-					<a class="clearSelected btn btn-danger">X</a> <span class="selected" id="addressToSelected"></span>
-				</div>
-			</div>
 		</div>
-		<div id="manualContainer" class="selectDistance">
-			<div class="form-group"><label>Distanța (km)<input class="form-control" type="number" name="distance" value=""></label></div>
-		</div>
-		<div class="checkbox"><label><input type="checkbox" id="night" name="night" value="1"> Drum nocturn? (18:00 - 6:00)</label></div>
-		<div class="checkbox"><label><input type="checkbox" name="booking" value="1"> Phone/App booking?</label></div>
-		<div class="checkbox"><label><input type="checkbox" name="airport" value="1"> To/From Airport?</label></div>
-		<div class="form-group number">
-			<label>Number of district crossings
-				<div class="input-group">
-					<div class="input-group-addon btn">-</div>
-					<input class="form-control" type="number" name="districts" value="0">
-					<div class="input-group-addon btn">+</div>
-				</div>
-			</label>
-		</div>
-		<div class="form-group number">
-			<label>Number of luggage (2 free)
-				<div class="input-group">
-					<div class="input-group-addon btn">-</div>
-					<input class="form-control" type="number" name="luggage" value="0">
-					<div class="input-group-addon btn">+</div>
-				</div>
-			</label>
-		</div>
-		<div class="form-group number">
-			<label>Number of people (4 free)
-				<div class="input-group">
-					<div class="input-group-addon btn">-</div>
-					<input class="form-control" type="number" name="people" value="0">
-					<div class="input-group-addon btn">+</div>
-				</div>
-			</label>
-		</div>
-		</form>
-	</div>
-	</div>
-	<div class="row">
-	</div>
-</div>
-</body>
-<script type="text/javascript" src="/assets/jquery/jquery.min.js"></script>
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBny6G8my9psW3AlRvxRXwEQsdcgDE3BTY&libraries=places&callback=initMap">
-</script>
-
-<script type="text/javascript">
-	var SELECTED = {};
-	var MAP = null;
-	var MARKER = null;
-	var DIRECTIONS = null;
-	function initMap() {
-		initAutocomplete();
-		document.getElementById("night").checked = hasNightSurcharge();
-
-        MAP = new google.maps.Map(document.getElementById('map'), {
-			zoom: 13,
-			center: {
-				lat: 4.9061552,
-				lng: 114.9030707
-			}
-        });
-        MARKER = new google.maps.Marker({
-          position: MAP.getCenter(),
-          map: MAP
-        });
-
-        DIRECTIONS = new google.maps.DirectionsRenderer;
-
-		//MAP.addListener('center_changed', moveMapTo);
-		MAP.addListener('click', moveMapTo);
-		MAP.addListener('resize', function(e) {
-			var center = MAP.getCenter();
-			moveMapTo(center.lat(), center.lng());
-		});
-		MAP.addListener('dragend', function(e) {
-			var center = MAP.getCenter();
-			moveMapTo(center.lat(), center.lng());
-		});
-		$("#mapDisplay").on("click", ".btn", function(e){
-			var action = $(this).data("action");
-			if(action=="use-this"){
-				var pos = $("#latlng").text().split(",");
-				var source = $("#mapDisplay").hide().data("source");
-				SELECTED[source] = new google.maps.LatLng(pos[0], pos[1]);
-				hideMap();
-				setSelectedAddress($("#latlng").text(), source);
-				checkGeocode();
-			}else if(action=="find-me"){
-				findMe();
-			}else if(action=="dismiss"){
-				hideMap();
-				$(".toolbar-mobile .show-map").toggleClass("hidden", false);
-			}
-		});
-		$(".toolbar-mobile .show-map").on("click", function(){
-			$("#mapDisplay").show();
-			$(".toolbar-mobile .show-map").toggleClass("hidden", true);
-		});
-		$("input[name=selectDistance]").click(function(e){
-			$(".selectDistance").hide();
-			$("#" + this.value + "Container").show();
-		});
-		$(".form-group.address-autocomplete .input-group-addon.show-map").click(function(e){
-			e.preventDefault();
-			showMap(true, $(this).data("source"));
-		});
-		$(".form-group.number .input-group-addon.btn").click(function(e){
-			e.preventDefault();
-			var increment = +1;
-			if ($(this).text() == "-") increment =-1;
-			var input = $(this).closest(".input-group").find("input[type=number]").eq(0);
-			var count = parseInt(input.val());
-			if(isNaN(count)) count = 0;
-			count+=increment;
-			if(count < 0) count = 0;
-			input.val(count);
-			checkCalculateCost();
-		});
-		$(".clearSelected").click(function(event){
-			var parent = $(this).closest(".address-autocomplete");
-			parent.find(".selectedContainer").hide();
-			var pickerContainer = parent.find(".pickerContainer");
-			pickerContainer.show();
-			var picker = pickerContainer.find(".picker");
-			picker.val("");
-			clearDetails(picker.attr("id"));
-		});
-		$("#manualContainer, .selectedContainer, .summary, #mapDisplay").hide();
-
-		$("form input").on("change keyup", function(event){
-			checkCalculateCost();
-		})
-		$( "form#calculateCost" ).on( "submit", function( event ) {
-			event.preventDefault();
-			checkCalculateCost();
-		});
-
-	}
-	function findMe(){
-		var optn = {
-			enableHighAccuracy : true
-		};
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(function(position){
-				moveMapTo(position.coords.latitude,position.coords.longitude);
-			}, showError, optn);
-		} else {
-			alert('Geolocation is not supported in your browser');
+		<div id="map"></div>
+		<script>
+		var markers = [];
+		var locations = [];
+		var map;
+		var distanceDirection;
+		var distanceDisplay;
+		function string2Location(input, index) {
+			var searchBox = new google.maps.places.SearchBox(input);
+			// map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+			map.addListener('bounds_changed', function() {
+				searchBox.setBounds(map.getBounds());
+			});
+			distanceDirection = new google.maps.DirectionsService();
+			distanceDisplay = new google.maps.DirectionsRenderer();
+			searchBox.addListener('places_changed', function() {
+				var places = searchBox.getPlaces();
+				if(places.length == 0) {
+					return;
+				}
+				markers[index].setMap(null);
+				var bounds = new google.maps.LatLngBounds();
+				places.forEach(function(place) {
+					if(!place.geometry) {
+						console.log("Returned place contains no geometry");
+						return;
+					}
+					var icon = {
+						url: place.icon,
+						size: new google.maps.Size(100, 100),
+						origin: new google.maps.Point(0, 0),
+						anchor: new google.maps.Point(17, 34),
+						scaledSize: new google.maps.Size(25, 25)
+					};
+					markers[index]=new google.maps.Marker({
+						map: map,
+						icon: icon,
+						title: place.name,
+						position: place.geometry.location
+					});
+					if(index == 0) {
+						locations[index]=place.geometry.location;
+					}
+					else {
+						locations[index]=place.geometry.location;
+					}
+					// console.log(locations[index].lat() + ", " + locations[index].lng());
+					if(place.geometry.viewport) {
+						bounds.union(place.geometry.viewport);
+					} else {
+						bounds.extend(place.geometry.location);
+					}
+				});
+				map.fitBounds(bounds);
+				distanceDisplay.setMap(map);
+			});
 		}
-	}
-	function moveMapTo(lat,lng){
-		if(!MAP) return;
-	    var center;
-		if(!lng && lat.latLng)
-			center = lat.latLng;
-		else
-			center = new google.maps.LatLng(lat, lng);
-	    MAP.panTo(center);
-		MARKER.setPosition(center);
-		$("#latlng").text(center.lat().toFixed(8) + "," + center.lng().toFixed(8));
-	}
-	function showError(error) {
-		switch(error.code) {
-			case error.PERMISSION_DENIED:
-				alert("User denied the request for Geolocation.");
-				break;
-			case error.POSITION_UNAVAILABLE:
-				alert("Location information is unavailable.");
-				break;
-			case error.TIMEOUT:
-				alert("The request to get user location timed out.");
-				break;
-			case error.UNKNOWN_ERROR:
-				alert("An unknown error occurred.");
-				break;
+		function initAutocomplete() {
+			locations[0] = new google.maps.LatLng();
+			locations[1] = new google.maps.LatLng();
+			markers[0] = new google.maps.Marker();
+			markers[1] = new google.maps.Marker();
+			map = new google.maps.Map(document.getElementById('map'), {
+				// Default position...
+				center: {
+					lat: 35.0823294,
+					lng: -106.8165662
+				},
+				zoom: 13,
+				// https://developers.google.com/maps/documentation/javascript/maptypes
+				mapTypeId: 'roadmap', // https://developers.google.com/maps/documentation/gaming/support/roadmap
+			});
+			var from = document.getElementById('from-input');
+			var to = document.getElementById('to-input');
+			string2Location(from, 0);
+			string2Location(to, 1);
+			google.maps.event.addDomListener(document.getElementById('submit'), 'click', calcRoute);
 		}
-	}
-	function hideMap(){
-		// $(".details .show-map").toggleClass("visible-xs-inline", false);
-		$("#mapDisplay").hide().data("source", "");
-	}
-	function showMap(showControls,source,directions){
-		if(showControls){
-			MARKER.setMap(MAP);
+		function calcDistance(start, end) {
+			return(google.maps.geometry.spherical.computeDistanceBetween(start, end) / 1000).toFixed(2); //KM
 		}
-		else{
-			MARKER.setMap(null);
-		}
-		$("#mapDisplay").show();
-		$("#mapDisplay .toolbar").toggle(showControls);
-
-		if(source)
-			$("#mapDisplay").data("source", source);
-
-		setTimeout(function(){
-			google.maps.event.trigger(MAP, 'resize');
-			//$(".details .show-map").toggleClass("visible-xs-inline", directions);
-			$(".toolbar-mobile .dismiss").toggleClass("hidden", !directions);
-			if(directions){
-				DIRECTIONS.setMap(MAP);
-				DIRECTIONS.setDirections(directions);
-				$(".toolbar-mobile .show-map").toggleClass("hidden", true);
-			}
-			else{
-		        DIRECTIONS.setMap(null);
-			}
-		}, 200);
-	}
-	function showRoute(response){
-		showMap(false,null,response);
-	}
-	function shouldManuallyCalculate(){
-		return (getFormInputAsObject().selectDistance || "") == "manual";
-	}
-	function checkCalculateCost(){
-		if(shouldManuallyCalculate() || !shouldManuallyCalculate() && SELECTED['distance']){
-			calculateCost();
-		}
-	}
-	function initAutocomplete() {
-		var AUTOCOMPLETE_OPTIONS = {
-			componentRestrictions: {
-				country: 'RO',
-			}
-		};
-		autocompleteFrom = new google.maps.places.Autocomplete(document.getElementById('addressFrom'), AUTOCOMPLETE_OPTIONS);
-		autocompleteTo = new google.maps.places.Autocomplete(document.getElementById('addressTo'), AUTOCOMPLETE_OPTIONS);
-		autocompleteFrom.addListener('place_changed', function(){fillInAddress(autocompleteFrom,'addressFrom')});
-		autocompleteTo.addListener('place_changed', function(){fillInAddress(autocompleteTo,'addressTo')});
-	}
-
-	function fillInAddress(autoCompleteObject, source) {
-		var place = autoCompleteObject.getPlace();
-		SELECTED[source] = place;
-		var name = place.name || "";
-		if(name) name += ": "
-		name += autoCompleteObject.getPlace().formatted_address;
-		setSelectedAddress(name, source);
-		checkGeocode();
-	}
-	function setSelectedAddress(name, source){
-		var selected = $("#" + source+"Selected");
-		selected.text(name);
-		selected.parent(".selectedContainer").show();
-		$("#" + source+"").closest(".pickerContainer").hide();
-	}
-	function checkGeocode(){
-		if(SELECTED['addressFrom'] && SELECTED['addressTo']){
-			geoCode(SELECTED['addressFrom'], SELECTED['addressTo'])
-		}
-	}
-	function geoCode(fromRaw, toRaw){
-		var from = fromRaw;
-		if(fromRaw.geometry && fromRaw.geometry.location) from = fromRaw.geometry.location;
-		var to = toRaw;
-		if(toRaw.geometry && toRaw.geometry.location) to = toRaw.geometry.location;
-		var origin = {lat: from.lat(), lng: from.lng()};
-		var destination = {lat: to.lat(), lng: to.lng()};
-		var geocoder = new google.maps.Geocoder;
-
-		var directionsService = new google.maps.DirectionsService;
-		directionsService.route(
-			{
-				origin: origin,
-				destination: destination,
-				travelMode: 'DRIVING',
-				unitSystem: google.maps.UnitSystem.METRIC
-			},
-			function(response, status) {
-				if (status !== 'OK') {
-					alert('Error was: ' + status);
+		function calcRoute() {
+			var value_distance=document.querySelector("#value-distance");
+			var value_price=document.querySelector("#value-price");
+			var start = new google.maps.LatLng(locations[0].lat(), locations[0].lng());
+			var end = new google.maps.LatLng(locations[1].lat(), locations[1].lng());
+			var distance=calcDistance(start, end);
+			value_distance.innerHTML=distance;
+			value_price.innerHTML=(distance * 2.5) + " RON"; // We can use .toFixed()...
+			var bounds = new google.maps.LatLngBounds();
+			bounds.extend(start);
+			bounds.extend(end);
+			map.fitBounds(bounds);
+			var request = {
+				travelMode: google.maps.TravelMode.DRIVING,
+				origin: start,
+				destination: end,
+			};
+			distanceDirection.route(request, function(response, status) {
+				if(status == google.maps.DirectionsStatus.OK) {
+					distanceDisplay.setDirections(response);
+					distanceDisplay.setMap(map);
 				}
 				else {
-					showRoute(response);
-					for (var j = 0; j < response.routes.length; j++) {
-						if(j == 0){
-							SELECTED['route'] = response.routes[j];
-							SELECTED['distance'] = response.routes[j].legs[0].distance.value;
-							calculateCost(response.routes[j].legs[0].distance.value);
-						}
-					}
+					alert("Error: From " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed : " + status);
 				}
-			}
-		);
-	}
-
-	function clearDetails(data){
-		$(".details").toggleClass("hidden-xs", true);
-		$(".toolbar-mobile .show-map").toggleClass("hidden", false);
-		$("#cost").text("0");
-		$(".summary").hide();
-		SELECTED[data] = null;
-		SELECTED['distance'] = null;
-		hideMap();
-	}
-	function calculateCost(distance, options){
-		if(typeof(distance) != "undefined"){
-			var cost = costBasedOnDistance(distance);
-			var extra = calculateExtras(options || getFormInputAsObject(), cost);
-			$("#cost").text(((cost+extra)/100).toFixed(2));
-			$(".details").toggleClass("hidden-xs", false);
-
-			if(SELECTED['route']){
-				$("#distance").text(SELECTED['route'].legs[0].distance.text);
-				$("#duration").text(SELECTED['route'].legs[0].duration.text);
-			}
-			$(".summary").toggle(!shouldManuallyCalculate());
-
+			});
 		}
-		else {
-			data = getFormInputAsObject();
-			if(data.selectDistance == "manual"){
-				hideMap();
-				if(!isNaN(parseInt(data.distance)))
-					calculateCost(data.distance, data);
-			}
-			else if(SELECTED['distance'] != 0){
-				$("#mapDisplay").show();
-				calculateCost(SELECTED['distance'], data);
-			}
-		}
-
-	}
-	function getFormInputAsObject(){
-		var output = {};
-		var array = $( "form#calculateCost" ).serializeArray();
-		for(var i = 0; i < array.length; i++){
-			var data = array[i];
-			output[data.name] = data.value;
-		}
-		return output;
-	}
-
-	function hasNightSurcharge(){
-		var d = new Date();
-		var currentHourInBrunei = d.getUTCHours()+8%24;
-		return currentHourInBrunei < 6 || currentHourInBrunei >= 18;
-	}
-	var BASE_COST = 450;
-
-	function costBasedOnDistance(totalDistanceInMetres){
-		var freeDistance = 1000;
-		var costInCentsPerInterval = 20;
-		var intervalDistanceInMetres = 250;
-
-		if(totalDistanceInMetres > freeDistance)
-			return BASE_COST + (totalDistanceInMetres - freeDistance) / intervalDistanceInMetres * costInCentsPerInterval;
-		return BASE_COST;
-	}
-	function costBasedOnTime(totalTimeInSeconds){
-		var freeTime = 1 * 60;
-		var costInCentsPerInterval = 20;
-		var intervalPeriodInSeconds = 15;
-
-		if(totalTimeInSeconds > freeTime)
-			return BASE_COST + (totalTimeInSeconds - freeTime) / intervalPeriodInSeconds * costInCentsPerInterval;
-		return BASE_COST;
-	}
-	function calculateAreaSurcharge(options){
-		var cost = 0;
-		cost += calculateAreaSurchargeAirport(options.airport);
-		cost += calculateAreaSurchargeDistricts(options.districts);
-		return cost;	
-	}
-	function calculateAreaSurchargeAirport(toOrFromAirport){
-		var AIRPORT_COST = 300;
-		return costBasedOnToggle(toOrFromAirport, AIRPORT_COST)
-	}
-	function calculateAreaSurchargeDistricts(districts){
-		var DISTRICT_CROSS_COST = 800;
-		return costBasedOnInteger(districts,0,DISTRICT_CROSS_COST);
-	}
-	function costBasedOnToggle(value, amount){
-		if(typeof(value) != "undefined" && value) 
-			return amount;
-		return 0;
-	}
-	function costBasedOnInteger(countAsText, free, amountForExtra){
-		var count = parseInt(countAsText)
-		if(isNaN(count)) count = free;
-		if(count > free){
-			return (count - free) * amountForExtra;
-		}
-		return 0;
-	}
-
-	function calculateNightSurcharge(isNight, currentCost){
-		if(typeof(isNight) == "undefined" || !isNight) return 0;
-		var nightSurchargeExtraPercentageCost = 0.5;
-		return currentCost * nightSurchargeExtraPercentageCost;
-	}
-	function calculateBookingCharge(didBook){
-		var BOOKING_COST_IN_CENTS = 200;
-		return costBasedOnToggle(didBook, BOOKING_COST_IN_CENTS)
-	}
-	function calculateLuggageCharge(luggageCount){
-		var FREE_LUGGAGE = 2;
-		var LUGGAGE_COST_IN_CENTS_PER_EXTRA_LUGGAGE = 200;
-		return costBasedOnInteger(luggageCount, FREE_LUGGAGE, LUGGAGE_COST_IN_CENTS_PER_EXTRA_LUGGAGE);
-	}
-	function calculatePeopleCharge(peopleCount){
-		var FREE_PEOPLE = 4;
-		var PEOPLE_COST_IN_CENTS_PER_EXTRA_PEOPLE = 200;
-		return costBasedOnInteger(peopleCount, FREE_PEOPLE, PEOPLE_COST_IN_CENTS_PER_EXTRA_PEOPLE);
-	}
-	function calculateExtras(extraOptions, currentCostInCents){
-		var extraCost = 0;
-
-		extraCost += calculateAreaSurcharge(extraOptions,currentCostInCents);
-		extraCost += calculateNightSurcharge(extraOptions.night, currentCostInCents);
-		extraCost += calculateBookingCharge(extraOptions['booking']);
-		extraCost += calculateLuggageCharge(extraOptions['luggage']);
-		extraCost += calculatePeopleCharge(extraOptions['people']);
-		return extraCost;
-	}
-</script>
+		</script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBp-pknNWVwgTXzkquVyYzvXUIq_i8FLBo&libraries=places&callback=initAutocomplete" async defer></script>
+	</body>
 </html>
